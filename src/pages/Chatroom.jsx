@@ -246,7 +246,7 @@ const Chatroom = () => {
                   }`}
                 >
                   <div className="text-2xl lg:text-xl">{msg.content}</div>
-                  <div className="text-xl lg:text-sm text-end text-zinc-500">
+                  <div className="text-xl lg:text-xs text-end text-zinc-500">
                     {msg.time.split(",")[1]}
                   </div>
                 </div>
