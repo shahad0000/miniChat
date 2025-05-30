@@ -75,6 +75,11 @@ const Chatroom = () => {
 
   useEffect(() => {
     getMessage();
+
+    const interval = setInterval(() => {
+        getMessage();
+    }, 3000)
+    return () => clearInterval(interval);
   }, []);
 
   return (
