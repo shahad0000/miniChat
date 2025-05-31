@@ -26,7 +26,7 @@ const Login = () => {
         navigate("/");
       } else {
         Swal.fire({
-          text: "Please find the credentials in the placeholders",
+          title: "Please find the credentials in the placeholders",
         });
       }
     } catch (err) {
