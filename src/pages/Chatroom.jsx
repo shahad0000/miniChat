@@ -1,8 +1,7 @@
-import React, { use, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { TbBackground } from "react-icons/tb";
@@ -25,12 +24,17 @@ const Chatroom = () => {
     content: "",
     time: "",
   });
+  const chatBottom = useRef(null);
   const lastMsg = messages[messages.length - 1];
   const canEdit = lastMsg && lastMsg.sender === currentUser;
   const [editedMsg, setEditedMsg] = useState({ id: "", content: "" });
   const [NewBgImg, setNewBgImg] = useState("");
   const [bgClr, setBgClr] = useState("");
   const [newBgClr, setNewBgClr] = useState("");
+
+  useEffect(() => {
+    chatBottom.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const changeBg = (e) => {
     e.preventDefault();
@@ -44,7 +48,7 @@ const Chatroom = () => {
       title: "Are you sure you want to log out?",
       showCancelButton: true,
       confirmButtonText: "Log out",
-      confirmButtonColor: "#a91d3a"
+      confirmButtonColor: "#a91d3a",
     });
     if (confirm.isConfirmed) {
       setIsLoggedIn(false);
@@ -108,7 +112,7 @@ const Chatroom = () => {
       title: "Are you sure you want to delete this message?",
       showCancelButton: true,
       confirmButtonText: "Delete",
-      confirmButtonColor: "#a91d3a"
+      confirmButtonColor: "#a91d3a",
     });
     if (confirmDelete.isConfirmed) {
       try {
@@ -124,11 +128,11 @@ const Chatroom = () => {
 
   useEffect(() => {
     getMessage();
-
-    const interval = setInterval(() => {
-      getMessage();
-    }, 3000);
-    return () => clearInterval(interval);
+    // For real time chat keep fetching every 3 seconds
+    // const interval = setInterval(() => {
+    //   getMessage();
+    // }, 3000);
+    // return () => clearInterval(interval);
   }, []);
 
   return (
@@ -369,26 +373,25 @@ const Chatroom = () => {
         >
           <div className="w-full lg:w-[65vw] ">
             {messages.map((msg) => (
-
               <div
                 key={msg.id}
                 className={`flex items-center ${
                   msg.sender === currentUser ? "justify-end" : "justify-start"
                 }`}
               >
-                         {msg.sender !== currentUser && (
-                    <div className="w-12 h-12 border-1 rounded-full overflow-hidden">
-                      <img
-                        className="w-full h-full object-cover"
-                        src={`${
-                          currentUser === "Amy"
-                            ? "/imgs/John.png"
-                            : "/imgs/Amy.png"
-                        }`}
-                        alt="Profile image"
-                      />
-                    </div>
-                  )}
+                {msg.sender !== currentUser && (
+                  <div className="w-12 h-12 border-1 rounded-full overflow-hidden">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={`${
+                        currentUser === "Amy"
+                          ? "/imgs/John.png"
+                          : "/imgs/Amy.png"
+                      }`}
+                      alt="Profile image"
+                    />
+                  </div>
+                )}
                 {canEdit && lastMsg.id === msg.id && (
                   <div className="flex gap-1">
                     <button
@@ -415,7 +418,6 @@ const Chatroom = () => {
                     msg.sender === currentUser ? "bg-green-200" : "bg-white"
                   }`}
                 >
-         
                   <div className="text-3xl">{msg.content}</div>
                   <div className="text-xl lg:text-xs text-end text-zinc-500">
                     {msg.time}
@@ -425,6 +427,8 @@ const Chatroom = () => {
             ))}
           </div>
         </div>
+        <div ref={chatBottom}></div>
+
         <div className="fixed bottom-0 left-0 right-0 flex justify-center w-full">
           <div className="w-full flex justify-center gap-3 p-2 bg-white border-t border-gray-300">
             <div className="w-full lg:w-[65vw] flex items-center">
