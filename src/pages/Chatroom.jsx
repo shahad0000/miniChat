@@ -16,7 +16,6 @@ const Chatroom = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("loggedIn") === "true"
   );
-  const [editMsgId, setEditMsgId] = useState(null);
   const currentUser = localStorage.getItem("username");
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState({
@@ -32,15 +31,14 @@ const Chatroom = () => {
   const [bgClr, setBgClr] = useState("");
   const [newBgClr, setNewBgClr] = useState("");
 
-
+  // Direct user to login page
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
     }
   }, [navigate]);
 
-
-
+  // Scroll to the bottom of the chat
   useEffect(() => {
     chatBottom.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -51,6 +49,7 @@ const Chatroom = () => {
     setBgImg(NewBgImg);
     setBgClr(newBgClr);
   };
+  
   // Log out
   const handleLogout = async () => {
     const confirm = await Swal.fire({
