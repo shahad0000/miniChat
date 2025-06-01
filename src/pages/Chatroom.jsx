@@ -129,10 +129,10 @@ const Chatroom = () => {
   useEffect(() => {
     getMessage();
     // For real time chat keep fetching every 3 seconds
-    // const interval = setInterval(() => {
-    //   getMessage();
-    // }, 3000);
-    // return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      getMessage();
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
