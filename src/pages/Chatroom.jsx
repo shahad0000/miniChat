@@ -32,6 +32,15 @@ const Chatroom = () => {
   const [bgClr, setBgClr] = useState("");
   const [newBgClr, setNewBgClr] = useState("");
 
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+
+
   useEffect(() => {
     chatBottom.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
